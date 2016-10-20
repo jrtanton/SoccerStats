@@ -28,9 +28,9 @@ namespace SoccerStats
             }
         }
 
-        public static List<string[]> ReadSoccerResults(string fileName)
+        public static List<GameResult> ReadSoccerResults(string fileName)
         {
-            var soccerResults = new List<String[]>();
+            var soccerResults = new List<GameResult>();
 
             using (var reader = new StreamReader(fileName))
             {
@@ -46,8 +46,38 @@ namespace SoccerStats
                     {
                         gameResult.GameDate = gameDate;
                     };
+                    gameResult.TeamName = values[1];
+                    HomeOrAway homeOrAway;
+                    if(Enum.TryParse(values[2], out homeOrAway))
+                    {
+                        gameResult.HomeOrAway = homeOrAway;
+                    }
 
-                    soccerResults.Add(values);
+                    int parseInt;
+                    if (int.TryParse(values[3], out parseInt))
+                    {
+                        gameResult.Goals = parseInt;
+                    }
+                    if (int.TryParse(values[4], out parseInt))
+                    {
+                        gameResult.GoalAttempts = parseInt;
+                    }
+                    if (int.TryParse(values[5], out parseInt))
+                    {
+                        gameResult.ShotsOnGoal = parseInt;
+                    }
+                    if (int.TryParse(values[6], out parseInt))
+                    {
+                        gameResult.ShotsOffGoal = parseInt;
+                    }
+
+                    double parseDouble;
+                    if(double.TryParse(values[7],out parseDouble))
+                    {
+                        gameResult.PosessionPercent = parseDouble;
+                    }
+                    
+                    soccerResults.Add(gameResult);
                 }
             }
 
