@@ -21,10 +21,12 @@ namespace SoccerStats
 
             fileName = Path.Combine(directory.FullName, "players.json");
             var players = DeserializePlayers(fileName);
-            
-            foreach(var player in players)
+
+            var topPlayers = GetTopTenPlayers(players);
+
+            foreach(var player in topPlayers)
             {
-                Console.WriteLine(player.second_name);
+                Console.WriteLine(player.SecondName+" "+player.PointsPerGame);
             }
 
         }
@@ -106,6 +108,15 @@ namespace SoccerStats
             }
 
                 return players;
+        }
+
+        public static List<Player> GetTopTenPlayers(List<Player> players)
+        {
+            players.Sort(new PlayerComparer());
+
+            var topTenPlayers = new List<Player>(players.Take(10));
+
+            return topTenPlayers;
         }
 
     }
